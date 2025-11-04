@@ -12,7 +12,7 @@ import FileUpload from "@/components/ui/file-upload";
 import { useAuthStore } from "@/store/auth";
 import { databases } from "@/models/client/config";
 import { db, QUESTION_COLLECTION } from "@/models/name";
-import { ID } from "appwrite";
+import { ID, Permission, Role } from "appwrite";
 import toast from "react-hot-toast";
 
 const containerVariants = {
@@ -128,7 +128,12 @@ export default function AskQuestionPage() {
         db,
         QUESTION_COLLECTION,
         ID.unique(),
-        questionData
+        questionData,
+        [
+          Permission.read(Role.any()), // Anyone can read
+          Permission.update(Role.user(user.$id)), // Only author can update
+          Permission.delete(Role.user(user.$id)), // Only author can delete
+        ]
       );
 
       console.log("Question created successfully:", response);
