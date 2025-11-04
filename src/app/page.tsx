@@ -131,7 +131,7 @@ export default function HomePage() {
               className="flex flex-col sm:flex-row gap-4 justify-center items-center"
             >
               <Link href="/ask">
-                <Button variant="primary" className="text-lg px-8 py-6 group">
+                <Button variant="primary" className="text-lg px-8 py-4 group">
                   Ask a Question
                   <IconArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
                 </Button>
