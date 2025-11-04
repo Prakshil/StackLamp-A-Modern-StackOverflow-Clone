@@ -1,7 +1,7 @@
 import { NextResponse, NextRequest } from 'next/server'
  
-import getOrCreateDB from './models/server/dbconfig'
-import getOrCreateStorage from './models/server/storagesetup'
+import getOrCreateDB from '@/models/server/dbconfig'
+import getOrCreateStorage from '@/models/server/storagesetup'
 
 // This function can be marked `async` if using `await` inside
 export async function proxy(request: NextRequest) {
