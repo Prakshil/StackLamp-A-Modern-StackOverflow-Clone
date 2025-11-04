@@ -12,7 +12,10 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
   useEffect(() => {
     if (hydrated) {
       // Check for existing session (including OAuth)
-      verifySession();
+      verifySession().catch((error) => {
+        console.error("Session verification failed:", error);
+        // Continue anyway - user will need to login
+      });
     }
   }, [hydrated, verifySession]);
 
