@@ -10,6 +10,7 @@ import { databases } from "@/models/client/config";
 import { db, QUESTION_COLLECTION } from "@/models/name";
 import { Query } from "appwrite";
 import toast from "react-hot-toast";
+import { getRelativeTime } from "@/lib/date-utils";
 
 interface Question {
   $id: string;
@@ -27,7 +28,7 @@ const staticQuestions: Question[] = [
     title: "How do I center a div in CSS?",
     content: "I've been trying to center a div element both horizontally and vertically on my page. I've tried using margin: auto but it only centers horizontally. What's the best modern approach to center elements in CSS?",
     tags: ["css", "html", "frontend"],
-    $createdAt: new Date(Date.now() - 86400000 * 2).toISOString(),
+    $createdAt: "2025-11-02T10:00:00.000Z",
     isStatic: true
   },
   {
@@ -35,7 +36,7 @@ const staticQuestions: Question[] = [
     title: "What's the difference between let, const, and var in JavaScript?",
     content: "I'm learning JavaScript and I'm confused about when to use let, const, or var. Can someone explain the differences and best practices for each?",
     tags: ["javascript", "es6", "variables"],
-    $createdAt: new Date(Date.now() - 86400000 * 3).toISOString(),
+    $createdAt: "2025-11-01T10:00:00.000Z",
     isStatic: true
   },
   {
@@ -43,7 +44,7 @@ const staticQuestions: Question[] = [
     title: "How to fix 'Cannot read property of undefined' error?",
     content: "I keep getting this error in my React app: 'Cannot read property 'map' of undefined'. I'm trying to map over an array from an API response. How can I handle this properly?",
     tags: ["javascript", "react", "error-handling"],
-    $createdAt: new Date(Date.now() - 86400000 * 5).toISOString(),
+    $createdAt: "2025-10-30T10:00:00.000Z",
     isStatic: true
   },
   {
@@ -51,7 +52,7 @@ const staticQuestions: Question[] = [
     title: "Best practices for REST API design",
     content: "I'm building a REST API for my application and want to follow best practices. What are the key principles I should follow for URL structure, HTTP methods, and response codes?",
     tags: ["api", "rest", "backend", "best-practices"],
-    $createdAt: new Date(Date.now() - 86400000 * 7).toISOString(),
+    $createdAt: "2025-10-28T10:00:00.000Z",
     isStatic: true
   },
   {
@@ -59,7 +60,7 @@ const staticQuestions: Question[] = [
     title: "How to optimize React app performance?",
     content: "My React application is getting slow as it grows. What are some effective ways to optimize performance? I've heard about useMemo and useCallback but not sure when to use them.",
     tags: ["react", "performance", "optimization"],
-    $createdAt: new Date(Date.now() - 86400000 * 10).toISOString(),
+    $createdAt: "2025-10-25T10:00:00.000Z",
     isStatic: true
   },
   {
@@ -67,7 +68,7 @@ const staticQuestions: Question[] = [
     title: "Understanding async/await vs Promises",
     content: "What are the main differences between using async/await syntax and traditional Promise chains? When should I use one over the other?",
     tags: ["javascript", "async", "promises"],
-    $createdAt: new Date(Date.now() - 86400000 * 12).toISOString(),
+    $createdAt: "2025-10-23T10:00:00.000Z",
     isStatic: true
   },
   {
@@ -75,7 +76,7 @@ const staticQuestions: Question[] = [
     title: "How to deploy Next.js app to production?",
     content: "I've built a Next.js application and I'm ready to deploy it. What are the recommended hosting platforms and what configuration do I need to set up?",
     tags: ["nextjs", "deployment", "production"],
-    $createdAt: new Date(Date.now() - 86400000 * 14).toISOString(),
+    $createdAt: "2025-10-21T10:00:00.000Z",
     isStatic: true
   },
   {
@@ -83,7 +84,7 @@ const staticQuestions: Question[] = [
     title: "Git merge vs rebase - which one to use?",
     content: "I'm working on a team project and we're debating whether to use merge or rebase for integrating changes. What are the pros and cons of each approach?",
     tags: ["git", "version-control", "workflow"],
-    $createdAt: new Date(Date.now() - 86400000 * 15).toISOString(),
+    $createdAt: "2025-10-20T10:00:00.000Z",
     isStatic: true
   }
 ];
@@ -225,7 +226,7 @@ export default function QuestionsPage() {
                             </div>
                           )}
                           <div className="mt-3 text-xs text-gray-500">
-                            Asked {new Date(question.$createdAt).toLocaleDateString()}
+                            Asked {getRelativeTime(question.$createdAt)}
                           </div>
                         </div>
                       </div>
