@@ -18,6 +18,10 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "StackLamp - Ask, Answer, Share Knowledge",
   description: "A modern Q&A platform for developers. Ask questions, share knowledge, and learn together.",
+  icons: {
+    icon: '/favicon.svg',
+    apple: '/favicon.svg',
+  },
 };
 
 export default function RootLayout({
