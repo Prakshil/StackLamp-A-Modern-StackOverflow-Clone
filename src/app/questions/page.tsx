@@ -121,20 +121,36 @@ export default function QuestionsPage() {
   async function loadQuestions() {
     setLoading(true);
     try {
+      console.log("Fetching questions from:", db, QUESTION_COLLECTION);
       const response = await databases.listDocuments(db, QUESTION_COLLECTION, [
         Query.orderDesc("$createdAt"),
         Query.limit(50),
       ]);
       
+      console.log("Questions response:", response);
+      console.log("Number of documents:", response.documents.length);
+      
       // Combine real questions with static ones
       const realQuestions = response.documents as unknown as Question[];
+      console.log("Real questions:", realQuestions);
+      
       const allQuestions = [...realQuestions, ...staticQuestions].sort((a, b) => 
         new Date(b.$createdAt).getTime() - new Date(a.$createdAt).getTime()
       );
       
+      console.log("Total questions (real + static):", allQuestions.length);
       setQuestions(allQuestions);
-    } catch (err) {
+      
+      if (realQuestions.length > 0) {
+        toast.success(`Loaded ${realQuestions.length} live question${realQuestions.length > 1 ? 's' : ''}!`);
+      }
+    } catch (err: any) {
       console.error("Error loading questions:", err);
+      console.error("Error details:", {
+        message: err?.message,
+        code: err?.code,
+        type: err?.type,
+      });
       // On error, just show static questions
       toast.error("Could not load latest questions. Showing sample questions.");
       setQuestions(staticQuestions);
