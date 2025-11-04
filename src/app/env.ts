@@ -1,3 +1,4 @@
+
 const env = {
   appwrite: {
     endpoint: String(process.env.NEXT_PUBLIC_APPWRITE_HOST_URL),
@@ -7,3 +8,4 @@ const env = {
 }
 
 export default env
+
