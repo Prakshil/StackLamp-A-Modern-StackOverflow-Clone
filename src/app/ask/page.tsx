@@ -50,9 +50,40 @@ export default function AskQuestionPage() {
   React.useEffect(() => {
     // Wait for hydration before checking auth
     if (hydrated && !user) {
+      toast.error("Please login to ask a question");
       router.push("/login");
     }
   }, [user, hydrated, router]);
+
+  // Show loading while hydrating
+  if (!hydrated) {
+    return (
+      <>
+        <Header />
+        <div className="flex min-h-[calc(100vh-200px)] items-center justify-center">
+          <div className="text-center">
+            <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
+            <p className="mt-4 text-gray-500">Loading...</p>
+          </div>
+        </div>
+      </>
+    );
+  }
+
+  // Show loading if not authenticated yet
+  if (!user) {
+    return (
+      <>
+        <Header />
+        <div className="flex min-h-[calc(100vh-200px)] items-center justify-center">
+          <div className="text-center">
+            <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
+            <p className="mt-4 text-gray-500">Checking authentication...</p>
+          </div>
+        </div>
+      </>
+    );
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
