@@ -111,10 +111,13 @@ const itemVariants = {
 };
 
 export default function QuestionsPage() {
-  const [questions, setQuestions] = useState<Question[]>(staticQuestions);
-  const [loading, setLoading] = useState(false);
+  const [questions, setQuestions] = useState<Question[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
+    setQuestions(staticQuestions); // Set static questions immediately
     loadQuestions();
   }, []);
 
@@ -163,16 +166,8 @@ export default function QuestionsPage() {
     <>
       <Header />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
-        <motion.div
-          className="space-y-6"
-          initial="hidden"
-          animate="visible"
-          variants={containerVariants}
-        >
-          <motion.div 
-            className="flex flex-col md:flex-row md:items-center justify-between gap-4"
-            variants={itemVariants}
-          >
+        <div className="space-y-6">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
               <h1 className="text-2xl md:text-3xl font-bold">All Questions</h1>
               <p className="mt-2 text-sm text-gray-600">
@@ -187,26 +182,18 @@ export default function QuestionsPage() {
                 <Button variant="primary" className="w-full md:w-auto">Ask a question</Button>
               </Link>
             </div>
-          </motion.div>
+          </div>
 
-          {loading && (
-            <motion.div 
-              className="text-center py-4"
-              variants={itemVariants}
-            >
+          {loading && questions.length === 0 && (
+            <div className="text-center py-4">
               <div className="inline-block animate-spin rounded-full h-6 w-6 border-b-2 border-indigo-600"></div>
-              <p className="mt-2 text-sm text-gray-500">Loading latest questions...</p>
-            </motion.div>
+              <p className="mt-2 text-sm text-gray-500">Loading questions...</p>
+            </div>
           )}
 
-          <motion.div 
-            className="grid grid-cols-1 gap-4"
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            {questions.length === 0 ? (
-              <motion.div variants={itemVariants}>
+          {!mounted ? null : (
+            <div className="grid grid-cols-1 gap-4">
+              {questions.length === 0 ? (
                 <Card>
                   <div className="text-center py-12">
                     <p className="text-gray-600">No questions yet. Be the first to ask!</p>
@@ -215,44 +202,44 @@ export default function QuestionsPage() {
                     </Link>
                   </div>
                 </Card>
-              </motion.div>
-            ) : (
-              questions.map((question) => (
-                <motion.div key={question.$id} variants={itemVariants}>
-                  <Link href={question.isStatic ? "#" : `/question/${question.$id}`}>
-                    <Card className="hover:shadow-md transition-shadow cursor-pointer bg-white/60 backdrop-blur-sm">
-                      <div className="flex flex-col md:flex-row items-start justify-between gap-4">
-                        <div className="flex-1 w-full">
-                          <h3 className="text-base md:text-lg font-semibold hover:text-indigo-600 transition-colors">
-                            {question.title}
-                          </h3>
-                          <p className="mt-1 text-sm text-gray-600 line-clamp-2">
-                            {question.content}
-                          </p>
-                          {question.tags && question.tags.length > 0 && (
-                            <div className="mt-2 flex flex-wrap gap-2">
-                              {question.tags.map((tag, idx) => (
-                                <span
-                                  key={idx}
-                                  className="px-2 py-1 text-xs bg-indigo-50 text-indigo-700 rounded-md"
-                                >
-                                  {tag}
-                                </span>
-                              ))}
+              ) : (
+                questions.map((question) => (
+                  <div key={question.$id}>
+                    <Link href={question.isStatic ? "#" : `/question/${question.$id}`}>
+                      <Card className="hover:shadow-md transition-shadow cursor-pointer bg-white/60 backdrop-blur-sm">
+                        <div className="flex flex-col md:flex-row items-start justify-between gap-4">
+                          <div className="flex-1 w-full">
+                            <h3 className="text-base md:text-lg font-semibold hover:text-indigo-600 transition-colors">
+                              {question.title}
+                            </h3>
+                            <p className="mt-1 text-sm text-gray-600 line-clamp-2">
+                              {question.content}
+                            </p>
+                            {question.tags && question.tags.length > 0 && (
+                              <div className="mt-2 flex flex-wrap gap-2">
+                                {question.tags.map((tag, idx) => (
+                                  <span
+                                    key={idx}
+                                    className="px-2 py-1 text-xs bg-indigo-50 text-indigo-700 rounded-md"
+                                  >
+                                    {tag}
+                                  </span>
+                                ))}
+                              </div>
+                            )}
+                            <div className="mt-3 text-xs text-gray-500">
+                              Asked {getRelativeTime(question.$createdAt)}
                             </div>
-                          )}
-                          <div className="mt-3 text-xs text-gray-500">
-                            Asked {getRelativeTime(question.$createdAt)}
                           </div>
                         </div>
-                      </div>
-                    </Card>
-                  </Link>
-                </motion.div>
-              ))
-            )}
-          </motion.div>
-        </motion.div>
+                      </Card>
+                    </Link>
+                  </div>
+                ))
+              )}
+            </div>
+          )}
+        </div>
       </div>
     </>
   );
